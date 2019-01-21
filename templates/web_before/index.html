@@ -1,0 +1,83 @@
+ {%extends 'web_before/base_main.html'%}
+
+ {% block title%}
+<title>李毅个人博客 - 首页</title>
+  {% endblock%}
+
+{% block content%}
+<article> 
+  <!--banner begin-->
+ <div class="picsbox"> 
+  <div class="banner">
+    <div id="banner" class="fader">
+      <li class="slide" ><a href="/" target="_blank"><img src="/static/web_before/images/英雄联盟.jpg"><span class="imginfo">英雄，为你而战</span></a></li>
+      <li class="slide" ><a href="/" target="_blank"><img src="/static/web_before/images/1.jpg"><span class="imginfo">莫愁前路无知己，天下谁人不识君</span></a></li>
+      <li class="slide" ><a href="/" target="_blank"><img src="/static/web_before/images/龙女.jpg"><span class="imginfo">小林家的龙女仆</span></a></li>
+      <div class="fader_controls">
+        <div class="page prev" data-target="prev">&lsaquo;</div>
+        <div class="page next" data-target="next">&rsaquo;</div>
+        <ul class="pager_list">
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!--banner end-->
+  <div class="toppic">
+    <li> <a href="/blog_before/info/17/" target="_blank"> <i><img src="/media/uplod/alyun.jpg"></i>
+      <h2>阿里云中国第一 市场份额为2到9名总和</h2>
+      <span>互联网资讯</span> </a> </li>
+    <li> <a href="/blog_before/info/18/" target="_blank"> <i><img src="/media/uplod/lanbo.jpg"></i>
+      <h2>兰博基尼</h2>
+      <span>跑车</span> </a> </li>
+  </div>
+  </div>
+  <div class="blank"></div>
+  <!--blogsbox begin-->
+
+  <div class="blogsbox">
+    {% for article in articles%}
+    <div class="blogs" data-scroll-reveal="enter bottom over 1s" >
+      <h3 class="blogtitle"><a href="{%url 'blog_before:info' article.id%}" target="_blank">{{article.title}}</a></h3>
+      <span class="blogpic"><a href="{%url 'blog_before:info' article.id%}" title=""><img src="/media/{{article.icon}}" alt=""></a></span>
+       {% autoescape off %}
+      <p class="blogtext">{{article.text}}</p>
+      {% endautoescape %}
+      <div class="bloginfo">
+        <ul>
+          <li class="author"><a href="/">{{user.username}}</a></li>
+          <li class="lmname"><a href="/">{{article.c.c_name}}</a></li>
+          <li class="timer">{{article.update_time}}</li>
+          <li class="view"><span>34567</span>已阅读</li>
+          <li class="like">9999</li>
+        </ul>
+      </div>
+    </div>
+    {%endfor%}
+
+  </div>
+  <!--blogsbox end-->
+  <div class="sidebar">
+
+    <div class="cloud">
+      <h2 class="hometitle">标签云</h2>
+      <ul>
+        <a href="/">陌上花开</a> <a href="/">校园生活</a> <a href="/">html5</a> <a href="/">SumSung</a> <a href="/">青春</a> <a href="/">温暖</a> <a href="/">阳光</a> <a href="/">三星</a><a href="/">索尼</a> <a href="/">华维荣耀</a> <a href="/">三星</a> <a href="/">索尼</a>
+      </ul>
+    </div>
+    <div class="guanzhu" id="follow-us">
+      <h2 class="hometitle">关注我们 么么哒！</h2>
+      <ul>
+        <li class="sina"><a href="http://www.goodly.xyz" target="_blank"><span>新浪微博</span>李毅博客</a></li>
+        <li class="tencent"><a href="http://www.goodly.xyz" target="_blank"><span>腾讯微博</span>李毅博客</a></li>
+        <li class="qq"><a href="/" target="_blank"><span>QQ号</span>2271032145</a></li>
+        <li class="email"><a href="/" target="_blank"><span>邮箱帐号</span>2271032145@qq.com</a></li>
+        <li class="wxgzh"><a href="/" target="_blank"><span>微信号</span>yangqq_1987</a></li>
+      </ul>
+    </div>
+  </div>
+</article>
+<footer>
+  <p>Design by <a href="http://www.goodly.xyz" target="_blank">LY的个人博客</a> <a href="/">蜀ICP备11002373号-1</a></p>
+</footer>
+<a href="#" class="cd-top">Top</a>
+{% endblock %}

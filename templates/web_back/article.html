@@ -1,0 +1,104 @@
+{% extends 'web_back/base_main.html'%}
+
+{% block css %}
+    {{ block.super }}
+{% endblock %}
+      {%block content%}
+      <form action="/Article/checkAll" method="post" >
+        <h1 class="page-header">操作</h1>
+        <ol class="breadcrumb">
+          <li><a href="{% url 'blog_back:add_article'%}">增加文章</a></li>
+        </ol>
+        <h1 class="page-header">管理 <span class="badge">7</span></h1>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th><span class="glyphicon glyphicon-th-large"></span> <span class="visible-lg">选择</span></th>
+                <th><span class="glyphicon glyphicon-file"></span> <span class="visible-lg">标题</span></th>
+                <th><span class="glyphicon glyphicon-list"></span> <span class="visible-lg">栏目</span></th>
+                <th class="hidden-sm"><span class="glyphicon glyphicon-tag"></span> <span class="visible-lg">标签</span></th>
+                <th class="hidden-sm"><span class="glyphicon glyphicon-comment"></span> <span class="visible-lg">评论</span></th>
+                <th><span class="glyphicon glyphicon-time"></span> <span class="visible-lg">日期</span></th>
+                <th><span class="glyphicon glyphicon-pencil"></span> <span class="visible-lg">操作</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for article in articles%}
+              <tr id="art_{{article.id}}">
+                <td><input type="checkbox" class="input-control" name="checkbox[]" value="" /></td>
+                <td class="article-title">{{article.title}}</td>
+                <td>{{article.c.c_name}}</td>
+                <td class="hidden-sm">{{article.key_words}}</td>
+                <td class="hidden-sm">0</td>
+                <td>2015-12-03</td>
+                <td><a href="{%url 'blog_back:update_article' article.id%}">修改</a> <a rel="{{article.id}}" >删除</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <footer class="message_footer">
+          <nav>
+            <div class="btn-toolbar operation" role="toolbar">
+              <div class="btn-group" role="group"> <a class="btn btn-default" onClick="select()">全选</a> <a class="btn btn-default" onClick="reverse()">反选</a> <a class="btn btn-default" onClick="noselect()">不选</a> </div>
+              <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="删除全部选中" name="checkbox_delete">删除</button>
+              </div>
+            </div>
+            <ul class="pagination pagenav">
+              {% if articles.has_previous%}
+
+              <li class="disabled"><a href="{% url 'blog_back:article'%}?page={{articles.previous_page_number}}" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a> </li>
+              {%else%}
+              <li class="disabled"><a href="" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a> </li>
+              {%endif%}
+
+              {%for i in articles.paginator.page_range%}
+              <li><a href="/blog_back/article/?page={{i}}">{{i}}</a></li>
+              {%endfor%}
+              {% if articles.has_next%}
+              <li><a href="{%url 'blog_back:article'%}?page={{articles.next_page_number}}" aria-label="Next"> <span aria-hidden="true">&raquo;</span> </a> </li>
+              {%else%}
+              <li class="disabled"><a href="" aria-label="Previous"> <span aria-hidden="true">&raquo;</span> </a> </li>
+              {% endif%}
+
+            </ul>
+          </nav>
+        </footer>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{%block content2%}
+<script src="/static/web_back/js/bootstrap.min.js"></script>
+<script src="/static/web_back/js/admin-scripts.js"></script>
+<script>
+//是否确认删除
+$(function(){   
+	$("#main table tbody tr td a").click(function(){
+		var name = $(this);
+		var id = name.attr("rel"); //对应id  
+		if (event.srcElement.outerText == "删除") 
+		{
+			if(window.confirm("此操作不可逆，是否确认？"))
+			{
+				$.ajax({
+					type: "POST",
+					url: "/blog_back/del_article/",
+					data: {"id":id},
+					cache: false, //不缓存此页面   
+					success: function (data) {
+						window.location.reload();
+					}
+				});
+			};
+		};
+	});   
+});
+</script>
+</body>
+</html>
+{% endblock %}
